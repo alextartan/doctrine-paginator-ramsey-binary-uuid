@@ -68,4 +68,23 @@ class PaginatorTest extends TestCase
         $p = new BinaryUuidSafePaginator($query);
         self::assertSame(2, $p->getIterator()->count());
     }
+
+    public function testBinaryUuidSafePaginatorWorksWhenEmpty(): void
+    {
+        /** @var UuidBasedRepository $repo*/
+        $repo = $this->em->getRepository(UuidBasedEntity::class);
+        foreach ($repo->findAll() as $entity){
+            $this->em->remove($entity);
+        }
+        $this->em->flush();
+
+        self::assertCount(0, $repo->findAll());
+
+        $query = $repo->createQueryBuilder('ube')
+                      ->setMaxResults(0)
+                      ->getQuery();
+
+        $p = new BinaryUuidSafePaginator($query);
+        self::assertSame(0, $p->getIterator()->count());
+    }
 }
