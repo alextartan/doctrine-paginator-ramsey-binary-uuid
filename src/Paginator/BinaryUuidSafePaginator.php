@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AlexTartan\Paginator;
 
 use AlexTartan\Helpers\ReflectionHelper;
+use ArrayIterator;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\LimitSubqueryOutputWalker;
 use Doctrine\ORM\Tools\Pagination\LimitSubqueryWalker;
@@ -19,8 +20,8 @@ use function count;
  * @method void appendTreeWalker(Query $query, string $walkerClass)
  * @method void unbindUnusedQueryParams(Query $query)
  *
- * @property Query query
- * @property bool  fetchJoinCollection
+ * @property Query $query
+ * @property bool $fetchJoinCollection
  */
 class BinaryUuidSafePaginator extends Paginator
 {
@@ -29,20 +30,28 @@ class BinaryUuidSafePaginator extends Paginator
         parent::__construct($query, $fetchJoinCollection);
     }
 
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public function __call(string $name, array $arguments)
     {
         return ReflectionHelper::callPrivateMethod($this, $name, $arguments);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function __get(string $name)
     {
         return ReflectionHelper::getPrivatePropertyValue($this, $name, Paginator::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         $offset = $this->query->getFirstResult();
         $length = $this->query->getMaxResults();
@@ -69,7 +78,7 @@ class BinaryUuidSafePaginator extends Paginator
             $whereInQuery = $this->cloneQuery($this->query);
             // don't do this for an empty id array
             if (count($ids) === 0) {
-                return new \ArrayIterator([]);
+                return new ArrayIterator([]);
             }
 
             $this->appendTreeWalker($whereInQuery, WhereInWalker::class);
@@ -87,6 +96,6 @@ class BinaryUuidSafePaginator extends Paginator
                            ->getResult($this->query->getHydrationMode());
         }
 
-        return new \ArrayIterator($result);
+        return new ArrayIterator($result);
     }
 }

@@ -6,6 +6,7 @@ namespace AlexTartanTest\Paginator;
 use AlexTartan\Paginator\BinaryUuidSafePaginator;
 use AlexTartanTest\Paginator\Setup\Entity\UuidBasedEntity;
 use AlexTartanTest\Paginator\Setup\EntityManager\EntityManagerSetup;
+use AlexTartanTest\Paginator\Setup\Repository\UuidBasedRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +41,7 @@ class PaginatorTest extends TestCase
 
     public function testStandardPaginatorDoesNotWork(): void
     {
+        /** @var UuidBasedRepository $repo*/
         $repo = $this->em->getRepository(UuidBasedEntity::class);
 
         self::assertCount(5, $repo->findAll());
@@ -54,6 +56,7 @@ class PaginatorTest extends TestCase
 
     public function testBinaryUuidSafePaginatorWorks(): void
     {
+        /** @var UuidBasedRepository $repo*/
         $repo = $this->em->getRepository(UuidBasedEntity::class);
 
         self::assertCount(5, $repo->findAll());
