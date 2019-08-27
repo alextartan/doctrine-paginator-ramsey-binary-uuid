@@ -41,7 +41,7 @@ class PaginatorTest extends TestCase
 
     public function testStandardPaginatorDoesNotWork(): void
     {
-        /** @var UuidBasedRepository $repo*/
+        /** @var UuidBasedRepository $repo */
         $repo = $this->em->getRepository(UuidBasedEntity::class);
 
         self::assertCount(5, $repo->findAll());
@@ -56,7 +56,7 @@ class PaginatorTest extends TestCase
 
     public function testBinaryUuidSafePaginatorWorks(): void
     {
-        /** @var UuidBasedRepository $repo*/
+        /** @var UuidBasedRepository $repo */
         $repo = $this->em->getRepository(UuidBasedEntity::class);
 
         self::assertCount(5, $repo->findAll());
@@ -71,9 +71,9 @@ class PaginatorTest extends TestCase
 
     public function testBinaryUuidSafePaginatorWorksWhenEmpty(): void
     {
-        /** @var UuidBasedRepository $repo*/
+        /** @var UuidBasedRepository $repo */
         $repo = $this->em->getRepository(UuidBasedEntity::class);
-        foreach ($repo->findAll() as $entity){
+        foreach ($repo->findAll() as $entity) {
             $this->em->remove($entity);
         }
         $this->em->flush();
