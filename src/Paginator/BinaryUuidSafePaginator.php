@@ -25,11 +25,6 @@ use function count;
  */
 class BinaryUuidSafePaginator extends Paginator
 {
-    public function __construct(Query $query, bool $fetchJoinCollection = true)
-    {
-        parent::__construct($query, $fetchJoinCollection);
-    }
-
     /**
      * @return mixed
      */
