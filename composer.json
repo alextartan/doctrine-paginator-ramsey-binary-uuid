@@ -12,7 +12,7 @@
   "minimum-stability": "stable",
   "require": {
     "php": "^7.2",
-    "alextartan/helpers": "^1",
+    "alextartan/helpers": "^2",
     "doctrine/orm": "^2.6.3",
     "ramsey/uuid-doctrine": "^1.5"
   },
